@@ -4,6 +4,8 @@
       Crystal Report
     </h1>
 
+    <PxFilter />
+
     <PxTableUI>
       <PxHeaderTable :titleArr="titlesMainTable" />
       <PxBodyTable
@@ -25,13 +27,15 @@
 
 <script>
 import { inject, onMounted, ref } from "vue";
-
+//UI
 import PxTableUI from "@/components/PxTableUI";
 import PxHeaderTable from "@/components/PxHeaderTable";
 import PxBodyTable from "@/components/PxBodyTable";
 import PxButton from "@/components/PxButton";
+import PxFilter from "@/components/PxFilter";
 //Utils
 import { queryApi } from "@/utils/getData";
+import { hexToRgb } from "@/utils/getHexToRGB";
 
 export default {
   name: "Home",
@@ -40,6 +44,7 @@ export default {
     PxHeaderTable,
     PxBodyTable,
     PxButton,
+    PxFilter,
   },
   setup() {
     const store = inject("storeReportApp");
@@ -95,14 +100,16 @@ export default {
             asignedUserName: issue.assignee.login,
             asignedUserAvatar: issue.assignee.avatar_url,
             stateIssue: issue.state,
-            updated: issue.updated_at,
+            updated: `${issue.updated_at.split("T")[0]}`,
           };
-
+          // - ${issue.updated_at.split("T")[1].replace("Z", "")}
           //get labels
           issue.labels.forEach((label) => {
             labelsIssue.value = {
               idLabe: label.id,
-              color: label.color,
+              color: `${hexToRgb(label.color).r}, ${hexToRgb(label.color).g}, ${
+                hexToRgb(label.color).b
+              }`,
               name: label.name,
             };
             objInformationIssues.value.labels = [

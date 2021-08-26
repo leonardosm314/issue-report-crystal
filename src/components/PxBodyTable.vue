@@ -9,7 +9,8 @@
         :key="label.id"
         :data-label="label.name"
         :style="{
-          background: '#' + label.color,
+          background: `rgba(${label.color}, 0.45)`,
+          border: `1px solid rgb(${label.color})`,
         }"
       >
         {{ label.name }}

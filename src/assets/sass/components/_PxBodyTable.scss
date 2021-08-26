@@ -72,11 +72,12 @@
     .label {
       border-radius: 30px;
       height: 25px;
-      padding: 2px 7px;
+      padding: 0px 7px;
       color: #000;
       line-height: 25px;
       margin: 0 4px 0 0;
       font-size: 12px;
+      letter-spacing: 0.5px;
     }
     &[data-state="open"],
     &[data-state="closed"] {
