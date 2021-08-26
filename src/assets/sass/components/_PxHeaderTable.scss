@@ -1,13 +1,19 @@
+@import "../utils/_variables.scss";
+
 .table {
   &__header {
-    margin: 1rem 0 0 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid #cccccc;
+    background: #362f4b;
     &-title {
       width: 100%;
       text-align: center;
-      padding: 1rem;
+      padding: 0.9rem;
+      color: #fff;
+      letter-spacing: 0.5px;
+      font-family: $font-bold;
       h3 {
         font-size: 1rem;
       }
