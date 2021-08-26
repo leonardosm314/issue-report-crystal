@@ -1,11 +1,18 @@
 <template>
   <div class="table__body-item">
-    <div class="table__body-value">#1</div>
-    <div class="table__body-value">Issue creado</div>
+    <div class="table__body-value">#{{ numIssue }}</div>
+    <div class="table__body-value">{{ titleIssue }}</div>
     <div class="table__body-value">bug</div>
-    <div class="table__body-value">LuisDev2001</div>
-    <div class="table__body-value">Open</div>
-    <div class="table__body-value">17 Set. 2021</div>
+    <div class="table__body-value">
+      <img :src="avatarUrl" :alt="asigned" />
+      <span>
+        {{ asigned }}
+      </span>
+    </div>
+    <div class="table__body-value" :data-state="stateIssue">
+      {{ stateIssue }}
+    </div>
+    <div class="table__body-value">{{ updatedIssue }}</div>
   </div>
 </template>
 
@@ -19,6 +26,7 @@ export default {
     asigned: String,
     stateIssue: String,
     updatedIssue: String,
+    avatarUrl: String,
   },
 };
 </script>
