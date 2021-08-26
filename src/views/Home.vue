@@ -4,26 +4,41 @@
       Crystal Report
     </h1>
 
-    <div class="table">
+    <PxTableUI>
       <PxHeaderTable />
       <PxBodyTable />
       <PxBodyTable />
       <PxBodyTable />
       <PxBodyTable />
       <PxBodyTable />
-    </div>
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+      <PxBodyTable />
+    </PxTableUI>
+
+    <PxButton />
   </div>
 </template>
 
 <script>
+import PxTableUI from "@/components/PxTableUI";
 import PxHeaderTable from "@/components/PxHeaderTable";
 import PxBodyTable from "@/components/PxBodyTable";
+import PxButton from "@/components/PxButton";
 
 export default {
   name: "Home",
   components: {
+    PxTableUI,
     PxHeaderTable,
     PxBodyTable,
+    PxButton,
   },
 };
 </script>

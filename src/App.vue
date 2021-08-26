@@ -1,12 +1,13 @@
 <template>
-  <div id="nav" class="wrapper">
+  <!-- <div id="nav" class="wrapper">
     <router-link to="/">
       Home
     </router-link>
-  </div>
+  </div> -->
   <router-view />
 </template>
 
 <style lang="scss">
 @import "~@/assets/sass/_base.scss";
+@import "~@/assets/sass/App.scss";
 </style>
