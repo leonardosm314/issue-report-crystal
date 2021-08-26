@@ -5,13 +5,13 @@
     </h1>
 
     <PxTableUI>
-      <PxHeaderTable />
+      <PxHeaderTable :titleArr="titlesMainTable" />
       <PxBodyTable
         v-for="issue in issuesArr"
         :key="issue.id"
         :numIssue="issue.numIssue"
         :titleIssue="issue.titleIssue"
-        :labels="[]"
+        :labels="issue.labels"
         :asigned="issue.asignedUserName"
         :avatarUrl="issue.asignedUserAvatar"
         :stateIssue="issue.stateIssue"
@@ -46,6 +46,7 @@ export default {
 
     let issuesArr = ref([]);
     const objInformationIssues = ref({
+      idIssue: 0,
       numIssue: "",
       titleIssue: "",
       labels: [],
@@ -53,6 +54,19 @@ export default {
       stateIssue: "",
       updated: "",
     });
+    const labelsIssue = ref({
+      idLabe: 0,
+      color: "",
+      name: "",
+    });
+    const titlesMainTable = ref([
+      "Nmro. de issue",
+      "Título de issue",
+      "Labels",
+      "Asignado",
+      "Estado",
+      "Update",
+    ]);
 
     const { api_host, owner, repo, options } = store.value;
 
@@ -83,9 +97,24 @@ export default {
             stateIssue: issue.state,
             updated: issue.updated_at,
           };
+
+          //get labels
+          issue.labels.forEach((label) => {
+            labelsIssue.value = {
+              idLabe: label.id,
+              color: label.color,
+              name: label.name,
+            };
+            objInformationIssues.value.labels = [
+              ...objInformationIssues.value.labels,
+              labelsIssue.value,
+            ];
+          });
+
           //Concat information
           issuesArr.value = [...issuesArr.value, objInformationIssues.value];
         });
+        console.log(issues);
       } catch (error) {
         console.log(`Error ${error}`);
       }
@@ -93,6 +122,7 @@ export default {
 
     return {
       issuesArr,
+      titlesMainTable,
     };
   },
 };

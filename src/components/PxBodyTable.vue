@@ -2,7 +2,19 @@
   <div class="table__body-item">
     <div class="table__body-value">#{{ numIssue }}</div>
     <div class="table__body-value">{{ titleIssue }}</div>
-    <div class="table__body-value">bug</div>
+    <div class="table__body-value label-content">
+      <span
+        class="label"
+        v-for="label in labels"
+        :key="label.id"
+        :data-label="label.name"
+        :style="{
+          background: '#' + label.color,
+        }"
+      >
+        {{ label.name }}
+      </span>
+    </div>
     <div class="table__body-value">
       <img :src="avatarUrl" :alt="asigned" />
       <span>
