@@ -32,6 +32,8 @@ import PxHeaderTable from "@/components/PxHeaderTable";
 import PxBodyTable from "@/components/PxBodyTable";
 import PxButton from "@/components/PxButton";
 
+import { queryApi } from "@/utils/getData";
+
 export default {
   name: "Home",
   components: {
@@ -40,6 +42,7 @@ export default {
     PxBodyTable,
     PxButton,
   },
+  setup() {},
 };
 </script>
 
