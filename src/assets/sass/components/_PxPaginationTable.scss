@@ -1,0 +1,34 @@
+.pagination {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 1rem 0 0 0;
+  &__actions {
+    display: flex;
+    height: 100%;
+    &-previus-page,
+    &-next-page {
+      width: 60px;
+      height: 100%;
+      button {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #b052c4;
+        background: #b052c4;
+        color: #ffffff;
+        transition: 0.3s ease all;
+        &:hover {
+          background: #b460c7;
+          border: 1px solid #b460c7;
+        }
+      }
+    }
+    &-previus-page {
+      margin: 0 1rem 0 0;
+    }
+  }
+}

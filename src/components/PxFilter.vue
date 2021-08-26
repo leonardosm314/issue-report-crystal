@@ -3,19 +3,19 @@
     <h3>Filtros</h3>
 
     <form action="" class="filter__form">
-      <PxInputFilterfrom nameInput="Labels" />
-      <PxInputFilterfrom nameInput="Asignado" />
+      <PxInputFilter nameInput="Labels" />
+      <PxInputFilter nameInput="Asignado" />
     </form>
   </section>
 </template>
 
 <script>
-import PxInputFilterfrom from "./Filter/PxInputFilter";
+import PxInputFilter from "./Filter/PxInputFilter";
 
 export default {
   name: "PxFilter",
   components: {
-    PxInputFilterfrom,
+    PxInputFilter,
   },
   setup() {
     return {};
@@ -23,4 +23,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/sass/components/_PxFilter.scss";
+</style>

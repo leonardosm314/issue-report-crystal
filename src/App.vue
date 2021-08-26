@@ -1,9 +1,4 @@
 <template>
-  <!-- <div id="nav" class="wrapper">
-    <router-link to="/">
-      Home
-    </router-link>
-  </div> -->
   <router-view />
 </template>
 
@@ -12,10 +7,10 @@ import { ref, provide } from "vue";
 
 export default {
   setup() {
-    const token = ref("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");
+    const token = ref("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");
     const storeReportApp = ref({
-      owner: "LuisDev2001",
-      repo: "report-issues-github",
+      owner: "avatar-global",
+      repo: "crystal-wsc91-2021-issues",
       api_host: "https://api.github.com",
       options: {
         method: "get",
@@ -26,6 +21,7 @@ export default {
         },
         muteHttpExceptions: true,
       },
+      issuesArr: [],
     });
 
     provide("storeReportApp", storeReportApp);

@@ -1,0 +1,13 @@
+@import "../utils/_variables.scss";
+
+.filter {
+  margin: 20px 0 0 0;
+  h3 {
+    font-family: $font-bold;
+    color: #000;
+    font-size: 24px;
+  }
+  &__form {
+    margin: 1rem 0 0;
+  }
+}

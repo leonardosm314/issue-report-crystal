@@ -4,12 +4,10 @@
       Crystal Report
     </h1>
 
-    <PxFilter />
-
     <PxTableUI>
       <PxHeaderTable :titleArr="titlesMainTable" />
       <PxBodyTable
-        v-for="issue in issuesArr"
+        v-for="issue in store.issuesArr"
         :key="issue.id"
         :numIssue="issue.numIssue"
         :titleIssue="issue.titleIssue"
@@ -20,22 +18,21 @@
         :updatedIssue="issue.updated"
       />
     </PxTableUI>
+    <PxPaginationTable />
 
     <PxButton />
   </div>
 </template>
 
 <script>
-import { inject, onMounted, ref } from "vue";
+import { inject, ref } from "vue";
 //UI
-import PxTableUI from "@/components/PxTableUI";
-import PxHeaderTable from "@/components/PxHeaderTable";
-import PxBodyTable from "@/components/PxBodyTable";
+import PxTableUI from "@/components/Table/PxTableUI";
+import PxHeaderTable from "@/components/Table/PxHeaderTable";
+import PxBodyTable from "@/components/Table/PxBodyTable";
+import PxPaginationTable from "@/components/Table/PxPaginationTable";
 import PxButton from "@/components/PxButton";
 import PxFilter from "@/components/PxFilter";
-//Utils
-import { queryApi } from "@/utils/getData";
-import { hexToRgb } from "@/utils/getHexToRGB";
 
 export default {
   name: "Home",
@@ -43,27 +40,13 @@ export default {
     PxTableUI,
     PxHeaderTable,
     PxBodyTable,
+    PxPaginationTable,
     PxButton,
     PxFilter,
   },
   setup() {
     const store = inject("storeReportApp");
 
-    let issuesArr = ref([]);
-    const objInformationIssues = ref({
-      idIssue: 0,
-      numIssue: "",
-      titleIssue: "",
-      labels: [],
-      asigned: "",
-      stateIssue: "",
-      updated: "",
-    });
-    const labelsIssue = ref({
-      idLabe: 0,
-      color: "",
-      name: "",
-    });
     const titlesMainTable = ref([
       "Nmro. de issue",
       "Título de issue",
@@ -73,62 +56,8 @@ export default {
       "Update",
     ]);
 
-    const { api_host, owner, repo, options } = store.value;
-
-    onMounted(async () => {
-      await getIssues();
-    });
-
-    const getIssues = async () => {
-      try {
-        const API_URL = `${api_host}/repos/${owner}/${repo}/issues`;
-        const params = [
-          "state=all",
-          "sort=created",
-          "direction=asc",
-          "per_page=100",
-        ];
-        const issues = await queryApi(API_URL, params, options);
-
-        issues.forEach((issue) => {
-          //Set value that i needed
-          objInformationIssues.value = {
-            idIssue: issue.id,
-            numIssue: issue.number,
-            titleIssue: issue.title,
-            labels: [],
-            asignedUserName: issue.assignee.login,
-            asignedUserAvatar: issue.assignee.avatar_url,
-            stateIssue: issue.state,
-            updated: `${issue.updated_at.split("T")[0]}`,
-          };
-          // - ${issue.updated_at.split("T")[1].replace("Z", "")}
-          //get labels
-          issue.labels.forEach((label) => {
-            labelsIssue.value = {
-              idLabe: label.id,
-              color: `${hexToRgb(label.color).r}, ${hexToRgb(label.color).g}, ${
-                hexToRgb(label.color).b
-              }`,
-              name: label.name,
-            };
-            objInformationIssues.value.labels = [
-              ...objInformationIssues.value.labels,
-              labelsIssue.value,
-            ];
-          });
-
-          //Concat information
-          issuesArr.value = [...issuesArr.value, objInformationIssues.value];
-        });
-        console.log(issues);
-      } catch (error) {
-        console.log(`Error ${error}`);
-      }
-    };
-
     return {
-      issuesArr,
+      store,
       titlesMainTable,
     };
   },

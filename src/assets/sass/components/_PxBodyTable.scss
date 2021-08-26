@@ -28,35 +28,33 @@
     color: #838383;
     font-family: $font-regular;
     font-size: 14px;
-    &.label-content {
-      overflow: auto hidden;
-      white-space: nowrap;
-      &::-webkit-scrollbar {
-        -webkit-appearance: none;
-      }
+    overflow: auto hidden;
+    white-space: nowrap;
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
 
-      &::-webkit-scrollbar:vertical {
-        width: 6px;
-      }
+    &::-webkit-scrollbar:vertical {
+      width: 6px;
+    }
 
-      &::-webkit-scrollbar-button:increment,
-      &::-webkit-scrollbar-button {
-        display: none;
-      }
+    &::-webkit-scrollbar-button:increment,
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
 
-      &::-webkit-scrollbar:horizontal {
-        height: 5px;
-      }
+    &::-webkit-scrollbar:horizontal {
+      height: 5px;
+    }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: #a7a7a7;
-        border-radius: 20px;
-        border: 0;
-      }
+    &::-webkit-scrollbar-thumb {
+      background-color: #a7a7a7;
+      border-radius: 20px;
+      border: 0;
+    }
 
-      &::-webkit-scrollbar-track {
-        border-radius: 10px;
-      }
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
     }
     img {
       width: 18px;

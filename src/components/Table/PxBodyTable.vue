@@ -1,7 +1,7 @@
 <template>
   <div class="table__body-item">
     <div class="table__body-value">#{{ numIssue }}</div>
-    <div class="table__body-value">{{ titleIssue }}</div>
+    <div class="table__body-value title-issue">{{ titleIssue }}</div>
     <div class="table__body-value label-content">
       <span
         class="label"
@@ -17,10 +17,12 @@
       </span>
     </div>
     <div class="table__body-value">
-      <img :src="avatarUrl" :alt="asigned" />
-      <span>
-        {{ asigned }}
-      </span>
+      <slot v-if="avatarUrl !== ''">
+        <img :src="avatarUrl" :alt="asigned" />
+        <span>
+          {{ asigned }}
+        </span>
+      </slot>
     </div>
     <div class="table__body-value" :data-state="stateIssue">
       {{ stateIssue }}
