@@ -113,6 +113,7 @@ export default {
               issue.assignee !== null ? issue.assignee.avatar_url : "",
             state_issue: issue.state,
             updated: `${issue.updated_at.split("T")[0]}`,
+            url_issue: issue.html_url,
           };
 
           //get labels
