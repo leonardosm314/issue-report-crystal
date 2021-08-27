@@ -36,13 +36,13 @@
     >
       <font-awesome-icon icon="file-excel" />
     </PxButton>
-    <!-- <PxButton
+    <PxButton
       className="action__refresh-table"
       classNameButton="btn btn-refresh-table"
       @click="handleUpdateIssues"
     >
       <font-awesome-icon icon="sync" />
-    </PxButton> -->
+    </PxButton>
   </div>
 </template>
 
@@ -172,7 +172,16 @@ export default {
 
     const handleUpdateIssues = async () => {
       store.value.load = true;
-      await getIssues();
+
+      const index = store.value.issuesArr.findIndex(
+        (item) => item.id_issue == item.id_issue
+      );
+
+      store.value.issuesArr = [
+        ...store.value.issuesArr.slice(0, index),
+        ...store.value.issuesArr.slice(index),
+      ];
+
       setTimeout(() => {
         store.value.load = false;
       }, 1000);
@@ -180,10 +189,10 @@ export default {
 
     onMounted(async () => {
       store.value.load = true;
-      setTimeout(async () => {
-        await getIssues();
+      await getIssues();
+      setTimeout(() => {
         store.value.load = false;
-      }, 1500);
+      }, 1000);
     });
 
     return {
