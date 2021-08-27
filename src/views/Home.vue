@@ -9,12 +9,12 @@
       <PxBodyTable
         v-for="(issue, index) in store.issuesArr"
         :key="issue.id"
-        :numIssue="issue.numIssue"
-        :titleIssue="issue.titleIssue"
+        :numIssue="issue.num_issue"
+        :titleIssue="issue.title_issue"
         :labels="issue.labels"
         :asigned="issue.asignedUserName"
         :avatarUrl="issue.asignedUserAvatar"
-        :stateIssue="issue.stateIssue"
+        :stateIssue="issue.state_issue"
         :updatedIssue="issue.updated"
         v-show="
           (store.pageNumber - 1) * store.pageSize <= index &&
@@ -24,7 +24,7 @@
     </PxTableUI>
     <PxPaginationTable />
 
-    <PxButton>
+    <PxButton @click="exportXLSX">
       <font-awesome-icon icon="file-excel" />
     </PxButton>
   </div>
@@ -32,6 +32,7 @@
 
 <script>
 import { inject, onMounted, ref } from "vue";
+import XLSX from "xlsx";
 //UI
 import PxTableUI from "@/components/Table/PxTableUI";
 import PxHeaderTable from "@/components/Table/PxHeaderTable";
@@ -102,15 +103,15 @@ export default {
         issues.forEach((issue) => {
           //Set value that i needed
           objInformationIssues.value = {
-            idIssue: issue.id,
-            numIssue: issue.number,
-            titleIssue: issue.title,
+            id_issue: issue.id,
+            num_issue: issue.number,
+            title_issue: issue.title,
             labels: [],
             asignedUserName:
               issue.assignee !== null ? issue.assignee.login : "",
             asignedUserAvatar:
               issue.assignee !== null ? issue.assignee.avatar_url : "",
-            stateIssue: issue.state,
+            state_issue: issue.state,
             updated: `${issue.updated_at.split("T")[0]}`,
           };
 
@@ -140,6 +141,16 @@ export default {
       }
     };
 
+    const exportXLSX = () => {
+      let data = XLSX.utils.json_to_sheet(store.value.issuesArr);
+      const workbook = XLSX.utils.book_new();
+      const filename = "crystal-issues";
+      const date = new Date();
+      const fullDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
+      XLSX.utils.book_append_sheet(workbook, data, filename);
+      XLSX.writeFile(workbook, `${filename}-${fullDate}.xlsx`);
+    };
+
     onMounted(async () => {
       await getIssues();
     });
@@ -147,6 +158,7 @@ export default {
     return {
       store,
       titlesMainTable,
+      exportXLSX,
     };
   },
 };

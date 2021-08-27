@@ -18,7 +18,7 @@
     </td>
     <td class="table__body-value">
       <slot v-if="avatarUrl !== ''">
-        <!-- <img :src="avatarUrl" :alt="asigned" /> -->
+        <img :src="avatarUrl" :alt="asigned" />
         <span>
           {{ asigned }}
         </span>
