@@ -1,20 +1,25 @@
+.btn {
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 0;
+  background: #4859cf;
+  border: 1px solid #4859cf;
+  color: #ffffff;
+  transition: 0.3s ease all;
+  &:hover {
+    background: #5061cf;
+  }
+}
 .actions {
   position: fixed;
   right: 13px;
   bottom: 30px;
-  .btn.btn-gen-report {
-    margin: 0;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    border: 0;
-    background: #4859cf;
-    border: 1px solid #4859cf;
-    color: #ffffff;
-    transition: 0.3s ease all;
-    &:hover {
-      background: #5061cf;
-    }
-  }
+}
+.action__refresh-table {
+  position: fixed;
+  right: 60px;
+  bottom: 30px;
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="actions">
-    <button class="btn btn-gen-report">
+  <div :class="className">
+    <button :class="classNameButton">
       <slot></slot>
     </button>
   </div>
@@ -9,6 +9,10 @@
 <script>
 export default {
   name: "PxButton",
+  props: {
+    className: String,
+    classNameButton: String,
+  },
 };
 </script>
 

@@ -4,29 +4,45 @@
       Crystal Report
     </h1>
 
-    <PxTableUI>
-      <PxHeaderTable :titleArr="titlesMainTable" />
-      <PxBodyTable
-        v-for="(issue, index) in store.issuesArr"
-        :key="issue.id"
-        :numIssue="issue.num_issue"
-        :titleIssue="issue.title_issue"
-        :labels="issue.labels"
-        :asigned="issue.asignedUserName"
-        :avatarUrl="issue.asignedUserAvatar"
-        :stateIssue="issue.state_issue"
-        :updatedIssue="issue.updated"
-        v-show="
-          (store.pageNumber - 1) * store.pageSize <= index &&
-            store.pageNumber * store.pageSize > index
-        "
-      />
-    </PxTableUI>
-    <PxPaginationTable />
+    <slot v-if="store.load">
+      <PxLoader />
+    </slot>
+    <slot v-else>
+      <PxTableUI>
+        <PxHeaderTable :titleArr="titlesMainTable" />
+        <PxBodyTable
+          v-for="(issue, index) in store.issuesArr"
+          :key="issue.id"
+          :numIssue="issue.num_issue"
+          :titleIssue="issue.title_issue"
+          :labels="issue.labels"
+          :asigned="issue.asignedUserName"
+          :avatarUrl="issue.asignedUserAvatar"
+          :stateIssue="issue.state_issue"
+          :updatedIssue="issue.updated"
+          v-show="
+            (store.pageNumber - 1) * store.pageSize <= index &&
+              store.pageNumber * store.pageSize > index
+          "
+        />
+      </PxTableUI>
+      <PxPaginationTable />
+    </slot>
 
-    <PxButton @click="exportXLSX">
+    <PxButton
+      className="actions"
+      classNameButton="btn btn-gen-report"
+      @click="handleExportXLSX"
+    >
       <font-awesome-icon icon="file-excel" />
     </PxButton>
+    <!-- <PxButton
+      className="action__refresh-table"
+      classNameButton="btn btn-refresh-table"
+      @click="handleUpdateIssues"
+    >
+      <font-awesome-icon icon="sync" />
+    </PxButton> -->
   </div>
 </template>
 
@@ -40,14 +56,15 @@ import PxBodyTable from "@/components/Table/PxBodyTable";
 import PxPaginationTable from "@/components/Table/PxPaginationTable";
 import PxButton from "@/components/PxButton";
 import PxFilter from "@/components/PxFilter";
+import PxLoader from "@/components/Loader/PxLoader";
 //Utils
 import { queryApi } from "@/utils/getData";
 import { hexToRgb } from "@/utils/getHexToRGB";
 //Icons
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faFileExcel } from "@fortawesome/free-solid-svg-icons";
+import { faFileExcel, faSync } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faFileExcel);
+library.add(faFileExcel, faSync);
 
 export default {
   name: "Home",
@@ -58,6 +75,7 @@ export default {
     PxPaginationTable,
     PxButton,
     PxFilter,
+    PxLoader,
     FontAwesomeIcon,
   },
   setup() {
@@ -142,7 +160,7 @@ export default {
       }
     };
 
-    const exportXLSX = () => {
+    const handleExportXLSX = () => {
       let data = XLSX.utils.json_to_sheet(store.value.issuesArr);
       const workbook = XLSX.utils.book_new();
       const filename = "crystal-issues";
@@ -152,14 +170,27 @@ export default {
       XLSX.writeFile(workbook, `${filename}-${fullDate}.xlsx`);
     };
 
-    onMounted(async () => {
+    const handleUpdateIssues = async () => {
+      store.value.load = true;
       await getIssues();
+      setTimeout(() => {
+        store.value.load = false;
+      }, 1000);
+    };
+
+    onMounted(async () => {
+      store.value.load = true;
+      setTimeout(async () => {
+        await getIssues();
+        store.value.load = false;
+      }, 1500);
     });
 
     return {
       store,
       titlesMainTable,
-      exportXLSX,
+      handleExportXLSX,
+      handleUpdateIssues,
     };
   },
 };

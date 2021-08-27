@@ -21,6 +21,7 @@ export default {
         },
         muteHttpExceptions: true,
       },
+      load: false,
       issuesArr: [],
       pageNumber: 1,
       pageSize: 20,
