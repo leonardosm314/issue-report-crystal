@@ -7,7 +7,9 @@
         </button>
       </div>
       <div class="pagition__number">
-        <p>{{ store.pageNumber }}</p>
+        <p>
+          {{ store.pageNumber }}
+        </p>
       </div>
       <div class="pagination__actions-next-page">
         <button

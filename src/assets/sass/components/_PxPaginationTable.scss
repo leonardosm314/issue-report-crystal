@@ -2,7 +2,7 @@
 
 .pagination {
   width: 100%;
-  height: 40px;
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -14,7 +14,7 @@
     height: 100%;
     &-previus-page,
     &-next-page {
-      width: 40px;
+      width: 35px;
       height: 100%;
       button {
         width: 100%;
@@ -22,8 +22,10 @@
         margin: 0;
         padding: 0;
         border-radius: 100%;
-        border: 1px solid #b052c4;
-        background: #b052c4;
+        // border: 1px solid #b052c4;
+        // background: #b052c4;
+        background: none;
+        border: 0;
         color: #ffffff;
         transition: 0.3s ease all;
         &:hover {
@@ -40,6 +42,8 @@
       margin: 0 1rem 0 0;
     }
     .pagition__number {
+      width: 20px;
+      text-align: center;
       color: #ffffff;
       font-family: $font-medium;
       font-size: 18px;
