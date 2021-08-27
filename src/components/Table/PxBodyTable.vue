@@ -1,8 +1,8 @@
 <template>
-  <div class="table__body-item">
-    <div class="table__body-value">#{{ numIssue }}</div>
-    <div class="table__body-value title-issue">{{ titleIssue }}</div>
-    <div class="table__body-value label-content">
+  <tr class="table__body-item">
+    <td class="table__body-value">#{{ numIssue }}</td>
+    <td class="table__body-value title-issue">{{ titleIssue }}</td>
+    <td class="table__body-value label-content">
       <span
         class="label"
         v-for="label in labels"
@@ -15,20 +15,20 @@
       >
         {{ label.name }}
       </span>
-    </div>
-    <div class="table__body-value">
+    </td>
+    <td class="table__body-value">
       <slot v-if="avatarUrl !== ''">
-        <img :src="avatarUrl" :alt="asigned" />
+        <!-- <img :src="avatarUrl" :alt="asigned" /> -->
         <span>
           {{ asigned }}
         </span>
       </slot>
-    </div>
-    <div class="table__body-value" :data-state="stateIssue">
+    </td>
+    <td class="table__body-value" :data-state="stateIssue">
       {{ stateIssue }}
-    </div>
-    <div class="table__body-value">{{ updatedIssue }}</div>
-  </div>
+    </td>
+    <td class="table__body-value">{{ updatedIssue }}</td>
+  </tr>
 </template>
 
 <script>

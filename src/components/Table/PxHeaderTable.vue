@@ -1,13 +1,13 @@
 <template>
-  <div class="table__header">
-    <div
+  <tr class="table__header">
+    <th
       class="table__header-title"
       v-for="(title, index) in titleArr"
       :key="index"
     >
       <h3 v-text="titleArr[index]"></h3>
-    </div>
-  </div>
+    </th>
+  </tr>
 </template>
 
 <script>

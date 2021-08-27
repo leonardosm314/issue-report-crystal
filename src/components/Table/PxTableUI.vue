@@ -1,7 +1,9 @@
 <template>
-  <div class="table">
-    <slot></slot>
-  </div>
+  <table class="table" id="js_table-UI">
+    <tbody>
+      <slot></slot>
+    </tbody>
+  </table>
 </template>
 
 <script>
