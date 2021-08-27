@@ -22,6 +22,8 @@ export default {
         muteHttpExceptions: true,
       },
       issuesArr: [],
+      pageNumber: 1,
+      pageSize: 20,
     });
 
     provide("storeReportApp", storeReportApp);

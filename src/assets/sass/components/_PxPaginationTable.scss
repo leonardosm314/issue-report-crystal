@@ -1,3 +1,5 @@
+@import "../utils/_variables.scss";
+
 .pagination {
   width: 100%;
   height: 40px;
@@ -7,16 +9,19 @@
   margin: 1rem 0 0 0;
   &__actions {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: 100%;
     &-previus-page,
     &-next-page {
-      width: 60px;
+      width: 40px;
       height: 100%;
       button {
         width: 100%;
         height: 100%;
         margin: 0;
         padding: 0;
+        border-radius: 100%;
         border: 1px solid #b052c4;
         background: #b052c4;
         color: #ffffff;
@@ -25,10 +30,19 @@
           background: #b460c7;
           border: 1px solid #b460c7;
         }
+        svg {
+          font-size: 14px;
+        }
       }
     }
-    &-previus-page {
+    &-previus-page,
+    .pagition__number {
       margin: 0 1rem 0 0;
+    }
+    .pagition__number {
+      color: #ffffff;
+      font-family: $font-medium;
+      font-size: 18px;
     }
   }
 }

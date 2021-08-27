@@ -1,6 +1,8 @@
 <template>
   <div class="actions">
-    <button class="btn btn-gen-report">I</button>
+    <button class="btn btn-gen-report">
+      <slot></slot>
+    </button>
   </div>
 </template>
 
