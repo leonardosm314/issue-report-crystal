@@ -1,0 +1,40 @@
+@import "../utils/_variables.scss";
+
+.action__table {
+  margin: 1rem 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  &-input {
+    width: 25%;
+    span {
+      display: block;
+      font-size: 16px;
+      color: #fff;
+      margin: 0 0 5px 0;
+      font-family: $font-regular;
+      letter-spacing: 0.5px;
+    }
+    input {
+      border: 0;
+      height: 25px;
+      padding: 10px;
+      width: 60px;
+      text-align: center;
+      color: #fff;
+      background: none;
+      font-size: 18px;
+      border-bottom: 1px solid #fff;
+      font-family: $font-bold;
+    }
+  }
+  &-page-size {
+    width: 25%;
+    font-family: $font-regular;
+    color: #fff;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+}

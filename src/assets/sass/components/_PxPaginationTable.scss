@@ -1,12 +1,11 @@
 @import "../utils/_variables.scss";
 
 .pagination {
-  width: 100%;
+  width: 25%;
   height: 35px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 1rem 0 0 0;
   &__actions {
     display: flex;
     align-items: center;

@@ -27,13 +27,9 @@
           "
         />
       </PxTableUI>
-      <PxPaginationTable />
+      <PxActionsTable />
     </slot>
-    <div class="count__issues">
-      <span>
-        {{ store.issuesArr.length }}
-      </span>
-    </div>
+
     <PxButton
       className="actions"
       classNameButton="btn btn-gen-report"
@@ -58,7 +54,7 @@ import XLSX from "xlsx";
 import PxTableUI from "@/components/Table/PxTableUI";
 import PxHeaderTable from "@/components/Table/PxHeaderTable";
 import PxBodyTable from "@/components/Table/PxBodyTable";
-import PxPaginationTable from "@/components/Table/PxPaginationTable";
+import PxActionsTable from "@/components/Table/PxActionsTable";
 import PxButton from "@/components/PxButton";
 import PxFilter from "@/components/PxFilter";
 import PxLoader from "@/components/Loader/PxLoader";
@@ -92,7 +88,7 @@ export default {
     PxTableUI,
     PxHeaderTable,
     PxBodyTable,
-    PxPaginationTable,
+    PxActionsTable,
     PxButton,
     PxFilter,
     PxLoader,
@@ -202,7 +198,6 @@ export default {
             });
           }
         });
-        console.log(store.value.issuesArr);
       } catch (error) {
         console.log(`Error ${error}`);
       }
