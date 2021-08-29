@@ -17,6 +17,9 @@
       </span>
     </td>
     <td class="table__body-value">
+      {{ titleColumn }}
+    </td>
+    <td class="table__body-value">
       <slot v-if="avatarUrl !== ''">
         <img :src="avatarUrl" :alt="asigned" />
         <span>
@@ -42,6 +45,7 @@ export default {
     stateIssue: String,
     updatedIssue: String,
     avatarUrl: String,
+    titleColumn: String,
   },
 };
 </script>

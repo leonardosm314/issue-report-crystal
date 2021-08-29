@@ -20,6 +20,7 @@
           :avatarUrl="issue.asignedUserAvatar"
           :stateIssue="issue.state_issue"
           :updatedIssue="issue.updated"
+          :titleColumn="issue.column_name"
           v-show="
             (store.pageNumber - 1) * store.pageSize <= index &&
               store.pageNumber * store.pageSize > index
@@ -28,7 +29,11 @@
       </PxTableUI>
       <PxPaginationTable />
     </slot>
-
+    <div class="count__issues">
+      <span>
+        {{ store.issuesArr.length }}
+      </span>
+    </div>
     <PxButton
       className="actions"
       classNameButton="btn btn-gen-report"
@@ -58,7 +63,22 @@ import PxButton from "@/components/PxButton";
 import PxFilter from "@/components/PxFilter";
 import PxLoader from "@/components/Loader/PxLoader";
 //Utils
-import { queryApi } from "@/utils/getData";
+//Get projects
+import { getProjectsData } from "../utils/getProjects.js";
+
+//Get project columns data
+import { getProjectColumnsData } from "../utils/getProjectColumn.js";
+
+//Get card cada for column
+import { getColumnCardsData } from "../utils/getColumnCard.js";
+
+//Get project card data
+import { getProjectCardsData } from "../utils/getProjectCardData.js";
+
+//Get issues Data
+import { getIssuesData } from "../utils/getIssuesDataById.js";
+
+//Convert from hex to rgb
 import { hexToRgb } from "@/utils/getHexToRGB";
 //Icons
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -87,6 +107,7 @@ export default {
       "Nmro. de issue",
       "Título de issue",
       "Labels",
+      "Titulo columna",
       "Asignado",
       "Estado",
       "Update",
@@ -110,51 +131,78 @@ export default {
 
     const getIssues = async () => {
       try {
-        const API_URL = `${api_host}/repos/${owner}/${repo}/issues`;
-        const params = [
-          "state=all",
-          "sort=created",
-          "direction=asc",
-          "per_page=100",
-        ];
-        const issues = await queryApi(API_URL, params, options);
-        issues.forEach((issue) => {
-          //Set value that i needed
-          objInformationIssues.value = {
-            id_issue: issue.id,
-            num_issue: issue.number,
-            title_issue: issue.title,
-            labels: [],
-            asignedUserName:
-              issue.assignee !== null ? issue.assignee.login : "",
-            asignedUserAvatar:
-              issue.assignee !== null ? issue.assignee.avatar_url : "",
-            state_issue: issue.state,
-            updated: `${issue.updated_at.split("T")[0]}`,
-            url_issue: issue.html_url,
-          };
+        const projects = await getProjectsData(api_host, owner, repo, options);
+        projects.forEach(async (projec) => {
+          let projectId = projec.id;
+          let projectsColumn = await getProjectColumnsData(
+            projectId,
+            api_host,
+            options
+          );
+          for (const project_column of projectsColumn) {
+            let projectColumnId = project_column.id;
+            const columnCardData = await getColumnCardsData(
+              projectColumnId,
+              api_host,
+              options
+            );
+            const dataCardsAndColumn = getProjectCardsData(
+              project_column,
+              columnCardData
+            );
+            dataCardsAndColumn.forEach(async (data_card) => {
+              const infoIssues = await getIssuesData(
+                api_host,
+                owner,
+                repo,
+                data_card.issue_id,
+                options
+              );
+              infoIssues[0].col_name = data_card.col_name;
+              infoIssues[0].col_id = data_card.col_id;
 
-          //get labels
-          issue.labels.forEach((label) => {
-            labelsIssue.value = {
-              idLabe: label.id,
-              color: `${hexToRgb(label.color).r}, ${hexToRgb(label.color).g}, ${
-                hexToRgb(label.color).b
-              }`,
-              name: label.name,
-            };
-            objInformationIssues.value.labels = [
-              ...objInformationIssues.value.labels,
-              labelsIssue.value,
-            ];
-          });
-
-          //Concat information
-          store.value.issuesArr = [
-            ...store.value.issuesArr,
-            objInformationIssues.value,
-          ];
+              //Set value that i needed
+              objInformationIssues.value = {
+                id_issue: infoIssues[0].id,
+                num_issue: infoIssues[0].number,
+                title_issue: infoIssues[0].title,
+                labels: [],
+                asignedUserName:
+                  infoIssues[0].assignee !== null
+                    ? infoIssues[0].assignee.login
+                    : "",
+                asignedUserAvatar:
+                  infoIssues[0].assignee !== null
+                    ? infoIssues[0].assignee.avatar_url
+                    : "",
+                state_issue: infoIssues[0].state,
+                updated: `${infoIssues[0].updated_at.split("T")[0]}`,
+                url_issue: infoIssues[0].html_url,
+                column_name: infoIssues[0].col_name,
+              };
+              //set labels
+              infoIssues[0].labels.forEach((label) => {
+                labelsIssue.value = {
+                  idLabe: label.id,
+                  color: `${hexToRgb(label.color).r}, ${
+                    hexToRgb(label.color).g
+                  }, ${hexToRgb(label.color).b}`,
+                  name: label.name,
+                };
+                objInformationIssues.value.labels = [
+                  ...objInformationIssues.value.labels,
+                  labelsIssue.value,
+                ];
+              });
+              //Concat information
+              store.value.issuesArr = [
+                ...store.value.issuesArr,
+                objInformationIssues.value,
+              ];
+            });
+          }
         });
+        console.log(store.value.issuesArr);
       } catch (error) {
         console.log(`Error ${error}`);
       }
