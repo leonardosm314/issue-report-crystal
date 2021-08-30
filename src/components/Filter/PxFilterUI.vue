@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import PxInputFilter from "./Filter/PxInputFilter";
+import PxInputFilter from "./PxInputFilter";
 
 export default {
-  name: "PxFilter",
+  name: "PxFilterUI",
   components: {
     PxInputFilter,
   },
@@ -24,5 +24,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/assets/sass/components/_PxFilter.scss";
+@import "~@/assets/sass/components/_PxFilterUI.scss";
 </style>

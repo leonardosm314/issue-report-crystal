@@ -30,57 +30,34 @@
       <PxActionsTable />
     </slot>
 
-    <PxButton
-      className="actions"
-      classNameButton="btn btn-gen-report"
-      @click="handleExportXLSX"
-    >
-      <font-awesome-icon icon="file-excel" />
-    </PxButton>
-    <PxButton
-      className="action__refresh-table"
-      classNameButton="btn btn-refresh-table"
-      @click="handleUpdateIssues"
-    >
-      <font-awesome-icon icon="sync" />
-    </PxButton>
+    <!-- Menu UI -->
+    <PxMenuUI />
   </div>
 </template>
 
 <script>
 import { inject, onMounted, ref } from "vue";
-import XLSX from "xlsx";
 //UI
 import PxTableUI from "@/components/Table/PxTableUI";
 import PxHeaderTable from "@/components/Table/PxHeaderTable";
 import PxBodyTable from "@/components/Table/PxBodyTable";
 import PxActionsTable from "@/components/Table/PxActionsTable";
-import PxButton from "@/components/PxButton";
-import PxFilter from "@/components/PxFilter";
+import PxFilter from "@/components/Filter/PxFilterUI";
+import PxMenuUI from "@/components/Menu/PxMenuUI";
 import PxLoader from "@/components/Loader/PxLoader";
 //Utils
 //Get projects
 import { getProjectsData } from "../utils/getProjects.js";
-
 //Get project columns data
 import { getProjectColumnsData } from "../utils/getProjectColumn.js";
-
 //Get card cada for column
 import { getColumnCardsData } from "../utils/getColumnCard.js";
-
 //Get project card data
 import { getProjectCardsData } from "../utils/getProjectCardData.js";
-
 //Get issues Data
 import { getIssuesData } from "../utils/getIssuesDataById.js";
-
 //Convert from hex to rgb
 import { hexToRgb } from "@/utils/getHexToRGB";
-//Icons
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faFileExcel, faSync } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faFileExcel, faSync);
 
 export default {
   name: "Home",
@@ -89,10 +66,9 @@ export default {
     PxHeaderTable,
     PxBodyTable,
     PxActionsTable,
-    PxButton,
     PxFilter,
     PxLoader,
-    FontAwesomeIcon,
+    PxMenuUI,
   },
   setup() {
     const store = inject("storeReportApp");
@@ -203,33 +179,6 @@ export default {
       }
     };
 
-    const handleExportXLSX = () => {
-      let data = XLSX.utils.json_to_sheet(store.value.issuesArr);
-      const workbook = XLSX.utils.book_new();
-      const filename = "crystal-issues";
-      const date = new Date();
-      const fullDate = `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
-      XLSX.utils.book_append_sheet(workbook, data, filename);
-      XLSX.writeFile(workbook, `${filename}-${fullDate}.xlsx`);
-    };
-
-    const handleUpdateIssues = async () => {
-      store.value.load = true;
-
-      const index = store.value.issuesArr.findIndex(
-        (item) => item.id_issue == item.id_issue
-      );
-
-      store.value.issuesArr = [
-        ...store.value.issuesArr.slice(0, index),
-        ...store.value.issuesArr.slice(index),
-      ];
-
-      setTimeout(() => {
-        store.value.load = false;
-      }, 1000);
-    };
-
     onMounted(async () => {
       store.value.load = true;
       await getIssues();
@@ -241,8 +190,6 @@ export default {
     return {
       store,
       titlesMainTable,
-      handleExportXLSX,
-      handleUpdateIssues,
     };
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div :class="className">
+  <div :class="className" :data-state-button="isActive">
     <button :class="classNameButton">
       <slot></slot>
     </button>
@@ -12,6 +12,7 @@ export default {
   props: {
     className: String,
     classNameButton: String,
+    isActive: Boolean,
   },
 };
 </script>

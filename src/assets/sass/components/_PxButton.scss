@@ -14,12 +14,29 @@
   }
 }
 .actions {
-  position: fixed;
-  right: 13px;
-  bottom: 30px;
-}
-.action__refresh-table {
-  position: fixed;
-  right: 60px;
-  bottom: 30px;
+  &__report,
+  &__refresh-table {
+    position: fixed;
+    right: 13px;
+    bottom: 30px;
+    z-index: 10;
+    transition: 0.4s ease all;
+  }
+
+  &__menu {
+    position: fixed;
+    right: 13px;
+    bottom: 30px;
+    z-index: 99;
+  }
+
+  //Active buttons
+  &__report[data-state-button="true"] {
+    right: 13px;
+    bottom: 80px;
+  }
+  &__refresh-table[data-state-button="true"] {
+    right: 60px;
+    bottom: 60px;
+  }
 }

@@ -4,11 +4,7 @@
       <span>
         ¿Cuantos issues deseas ver en la tabla?
       </span>
-      <input type="text" v-model="store.pageSize" />
-    </div>
-
-    <div class="action__table-page-size">
-      <p>Mostrar {{ store.pageSize }} issues por pagina:</p>
+      <input type="number" min="10" max="50" v-model="store.pageSize" />
     </div>
 
     <PxPaginationTable />
