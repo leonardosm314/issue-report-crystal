@@ -16,6 +16,16 @@
   >
     <font-awesome-icon icon="file-excel" />
   </PxButton>
+
+  <PxButton
+    className="actions__filter"
+    classNameButton="btn btn-filter"
+    :isActive="menuIsOpen"
+    @click="handleUpdateIssues"
+  >
+    <font-awesome-icon icon="filter" />
+  </PxButton>
+
   <PxButton
     className="actions__refresh-table"
     classNameButton="btn btn-refresh-table"
@@ -33,9 +43,14 @@ import XLSX from "xlsx";
 import PxButton from "@/components/PxButton";
 //Icons
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBars, faFileExcel, faSync } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faFileExcel,
+  faFilter,
+  faSync,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faFileExcel, faSync, faBars);
+library.add(faFileExcel, faSync, faBars, faFilter);
 
 export default {
   name: "PxMenuUI",
@@ -58,7 +73,7 @@ export default {
       XLSX.writeFile(workbook, `${filename}-${fullDate}.xlsx`);
     };
 
-    const handleUpdateIssues = async () => {
+    const handleUpdateIssues = () => {
       store.value.load = true;
 
       const index = store.value.issuesArr.findIndex(
