@@ -28,8 +28,7 @@
         color: #ffffff;
         transition: 0.3s ease all;
         &:hover {
-          background: #b460c7;
-          border: 1px solid #b460c7;
+          background: rgba(255, 255, 255, 0.15);
         }
         svg {
           font-size: 14px;

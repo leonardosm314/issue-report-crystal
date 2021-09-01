@@ -152,6 +152,7 @@ export default {
                 url_issue: infoIssues[0].html_url,
                 column_name: infoIssues[0].col_name,
               };
+
               //set labels
               infoIssues[0].labels.forEach((label) => {
                 labelsIssue.value = {
@@ -166,11 +167,38 @@ export default {
                   labelsIssue.value,
                 ];
               });
+
+              // Labels to print in excel
+              let objLabelsKeys = {};
+              infoIssues[0].labels.forEach((label, index) => {
+                objLabelsKeys[label.name] = {
+                  [label.name]: label.name,
+                };
+              });
+
+              for (const key in objLabelsKeys) {
+                objInformationIssues.value = {
+                  ...objInformationIssues.value,
+                  ...objLabelsKeys[key],
+                };
+              }
+
               //Concat information
               store.value.issuesArr = [
                 ...store.value.issuesArr,
                 objInformationIssues.value,
               ];
+
+              //Order array objects issues
+              store.value.issuesArr.sort((a, b) => {
+                if (a.num_issue < b.num_issue) {
+                  return -1;
+                }
+                if (a.num_issue > b.num_issue) {
+                  return 1;
+                }
+                return 0;
+              });
             });
           }
         });
@@ -182,9 +210,10 @@ export default {
     onMounted(async () => {
       store.value.load = true;
       await getIssues();
+
       setTimeout(() => {
         store.value.load = false;
-      }, 1000);
+      }, 300);
     });
 
     return {

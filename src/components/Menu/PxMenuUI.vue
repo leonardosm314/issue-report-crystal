@@ -87,7 +87,7 @@ export default {
 
       setTimeout(() => {
         store.value.load = false;
-      }, 1000);
+      }, 300);
     };
 
     const handleOpenMenu = () => {

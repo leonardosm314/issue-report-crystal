@@ -23,6 +23,7 @@ export default {
       },
       load: false,
       issuesArr: [],
+      issuesArrPrint: [],
       pageNumber: 1,
       pageSize: 20,
     });
