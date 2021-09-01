@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, ref, watchEffect } from "vue";
 //UI
 import PxTableUI from "@/components/Table/PxTableUI";
 import PxHeaderTable from "@/components/Table/PxHeaderTable";
@@ -208,12 +208,15 @@ export default {
     };
 
     onMounted(async () => {
-      store.value.load = true;
       await getIssues();
+    });
 
-      setTimeout(() => {
+    watchEffect(() => {
+      if (store.value.issuesArr.length < 470) {
+        store.value.load = true;
+      } else {
         store.value.load = false;
-      }, 300);
+      }
     });
 
     return {
