@@ -4,14 +4,14 @@
       Crystal Report
     </h1>
 
-    <slot v-if="store.load">
+    <slot v-if="stateLoaderUI">
       <PxLoader />
     </slot>
     <slot v-else>
       <PxTableUI>
         <PxHeaderTable :titleArr="titlesMainTable" />
         <PxBodyTable
-          v-for="(issue, index) in store.issuesArr"
+          v-for="(issue, index) in arrIssues"
           :key="issue.id"
           :numIssue="issue.num_issue"
           :titleIssue="issue.title_issue"
@@ -22,16 +22,22 @@
           :updatedIssue="issue.updated"
           :titleColumn="issue.column_name"
           v-show="
-            (store.pageNumber - 1) * store.pageSize <= index &&
-              store.pageNumber * store.pageSize > index
+            (pageNumber - 1) * pageSize <= index &&
+              pageNumber * pageSize > index
           "
         />
       </PxTableUI>
-      <PxActionsTable />
+      <PxActionsTable
+        :arrIssue="arrIssues"
+        :pageNumber="pageNumber"
+        :pageSize="pageSize"
+        :nextPage="handleNextPage"
+        :previusPage="handlePreviusPage"
+      />
     </slot>
 
     <!-- Menu UI -->
-    <PxMenuUI />
+    <PxMenuUI :issuesToPrint="arrIssues" />
   </div>
 </template>
 
@@ -46,16 +52,23 @@ import PxFilter from "@/components/Filter/PxFilterUI";
 import PxMenuUI from "@/components/Menu/PxMenuUI";
 import PxLoader from "@/components/Loader/PxLoader";
 //Utils
+//Get variables for get info
+import {
+  OWNER,
+  REPOSITORY,
+  HOST,
+  OPTIONS,
+} from "@/utils/getOptionsToConnectApi";
 //Get projects
-import { getProjectsData } from "../utils/getProjects.js";
+import { getProjectsData } from "@/utils/getProjects.js";
 //Get project columns data
-import { getProjectColumnsData } from "../utils/getProjectColumn.js";
+import { getProjectColumnsData } from "@/utils/getProjectColumn.js";
 //Get card cada for column
-import { getColumnCardsData } from "../utils/getColumnCard.js";
+import { getColumnCardsData } from "@/utils/getColumnCard.js";
 //Get project card data
-import { getProjectCardsData } from "../utils/getProjectCardData.js";
+import { getProjectCardsData } from "@/utils/getProjectCardData.js";
 //Get issues Data
-import { getIssuesData } from "../utils/getIssuesDataById.js";
+import { getIssuesData } from "@/utils/getIssuesDataById.js";
 //Convert from hex to rgb
 import { hexToRgb } from "@/utils/getHexToRGB";
 
@@ -71,9 +84,7 @@ export default {
     PxMenuUI,
   },
   setup() {
-    const store = inject("storeReportApp");
-
-    let { api_host, owner, repo, options } = store.value;
+    const stateLoaderUI = ref(false);
 
     const titlesMainTable = ref([
       "Nmro. de issue",
@@ -84,6 +95,8 @@ export default {
       "Estado",
       "Update",
     ]);
+
+    const arrIssues = ref([]);
 
     const objInformationIssues = ref({
       idIssue: 0,
@@ -101,22 +114,30 @@ export default {
       name: "",
     });
 
+    const pageNumber = ref(1);
+    const pageSize = ref(20);
+
     const getIssues = async () => {
       try {
-        const projects = await getProjectsData(api_host, owner, repo, options);
+        const projects = await getProjectsData(
+          HOST,
+          OWNER,
+          REPOSITORY,
+          OPTIONS
+        );
         projects.forEach(async (projec) => {
           let projectId = projec.id;
           let projectsColumn = await getProjectColumnsData(
             projectId,
-            api_host,
-            options
+            HOST,
+            OPTIONS
           );
           for (const project_column of projectsColumn) {
             let projectColumnId = project_column.id;
             const columnCardData = await getColumnCardsData(
               projectColumnId,
-              api_host,
-              options
+              HOST,
+              OPTIONS
             );
             const dataCardsAndColumn = getProjectCardsData(
               project_column,
@@ -124,11 +145,11 @@ export default {
             );
             dataCardsAndColumn.forEach(async (data_card) => {
               const infoIssues = await getIssuesData(
-                api_host,
-                owner,
-                repo,
+                HOST,
+                OWNER,
+                REPOSITORY,
                 data_card.issue_id,
-                options
+                OPTIONS
               );
               infoIssues[0].col_name = data_card.col_name;
               infoIssues[0].col_id = data_card.col_id;
@@ -184,13 +205,13 @@ export default {
               }
 
               //Concat information
-              store.value.issuesArr = [
-                ...store.value.issuesArr,
+              arrIssues.value = [
+                ...arrIssues.value,
                 objInformationIssues.value,
               ];
 
               //Order array objects issues
-              store.value.issuesArr.sort((a, b) => {
+              arrIssues.value.sort((a, b) => {
                 if (a.num_issue < b.num_issue) {
                   return -1;
                 }
@@ -207,21 +228,34 @@ export default {
       }
     };
 
+    const handleNextPage = () => {
+      pageNumber.value++;
+    };
+
+    const handlePreviusPage = () => {
+      pageNumber.value--;
+    };
+
     onMounted(async () => {
       await getIssues();
     });
 
     watchEffect(() => {
-      if (store.value.issuesArr.length < 470) {
-        store.value.load = true;
+      if (arrIssues.value.length < 470) {
+        stateLoaderUI.value = true;
       } else {
-        store.value.load = false;
+        stateLoaderUI.value = false;
       }
     });
 
     return {
-      store,
+      arrIssues,
       titlesMainTable,
+      pageNumber,
+      pageSize,
+      handleNextPage,
+      handlePreviusPage,
+      stateLoaderUI,
     };
   },
 };

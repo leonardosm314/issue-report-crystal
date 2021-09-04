@@ -1,31 +1,29 @@
 <template>
   <section class="action__table">
-    <div class="action__table-input">
-      <span>
-        ¿Cuantos issues deseas ver en la tabla?
-      </span>
-      <input type="number" min="10" max="50" v-model="store.pageSize" />
-    </div>
-
-    <PxPaginationTable />
+    <PxPaginationTable
+      :arrIssue="arrIssue"
+      :pageNumber="pageNumber"
+      :pageSize="pageSize"
+      :nextPage="nextPage"
+      :previusPage="previusPage"
+    />
   </section>
 </template>
 
 <script>
-import PxPaginationTable from "@/components/Table/PxPaginationTable";
-import { inject } from "@vue/runtime-core";
+import PxPaginationTable from "./PxPaginationTable";
 
 export default {
   name: "PxActionsTable",
+  props: {
+    arrIssue: Array,
+    pageNumber: Number,
+    pageSize: Number,
+    nextPage: Function,
+    previusPage: Function,
+  },
   components: {
     PxPaginationTable,
-  },
-  setup() {
-    const store = inject("storeReportApp");
-
-    return {
-      store,
-    };
   },
 };
 </script>

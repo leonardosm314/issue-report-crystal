@@ -2,21 +2,19 @@
   <div class="pagination">
     <div class="pagination__actions">
       <div class="pagination__actions-previus-page">
-        <button @click="previusPage" v-show="store.pageNumber != 1">
+        <button @click="previusPage" v-show="pageNumber != 1">
           <font-awesome-icon icon="chevron-left" />
         </button>
       </div>
       <div class="pagition__number">
         <p>
-          {{ store.pageNumber }}
+          {{ pageNumber }}
         </p>
       </div>
       <div class="pagination__actions-next-page">
         <button
           @click="nextPage"
-          v-show="
-            (store.pageNumber * store.pageSize) / store.issuesArr.length < 1
-          "
+          v-show="(pageNumber * pageSize) / arrIssue.length < 1"
         >
           <font-awesome-icon icon="chevron-right" />
         </button>
@@ -26,7 +24,6 @@
 </template>
 
 <script>
-import { inject } from "vue";
 //Icons
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -38,25 +35,15 @@ library.add(faChevronRight, faChevronLeft);
 
 export default {
   name: "PxPaginationTable",
+  props: {
+    arrIssue: Array,
+    pageNumber: Number,
+    pageSize: Number,
+    nextPage: Function,
+    previusPage: Function,
+  },
   components: {
     FontAwesomeIcon,
-  },
-  setup() {
-    const store = inject("storeReportApp");
-
-    const nextPage = () => {
-      store.value.pageNumber++;
-    };
-
-    const previusPage = () => {
-      store.value.pageNumber--;
-    };
-
-    return {
-      nextPage,
-      previusPage,
-      store,
-    };
   },
 };
 </script>
