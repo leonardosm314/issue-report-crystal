@@ -42,7 +42,8 @@
 </template>
 
 <script>
-import { inject, onMounted, ref, watchEffect } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
+import { useStore } from "vuex";
 //UI
 import PxTableUI from "@/components/Table/PxTableUI";
 import PxHeaderTable from "@/components/Table/PxHeaderTable";
@@ -84,7 +85,9 @@ export default {
     PxMenuUI,
   },
   setup() {
-    const stateLoaderUI = ref(false);
+    const store = useStore();
+
+    const stateLoaderUI = computed(() => store.state.loaderStateUI);
 
     const titlesMainTable = ref([
       "Nmro. de issue",
@@ -242,9 +245,9 @@ export default {
 
     watchEffect(() => {
       if (arrIssues.value.length < 470) {
-        stateLoaderUI.value = true;
+        store.dispatch("setShowLoaderUIState");
       } else {
-        stateLoaderUI.value = false;
+        store.dispatch("setHideLoaderUIState");
       }
     });
 
