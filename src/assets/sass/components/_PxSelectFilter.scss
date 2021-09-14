@@ -1,0 +1,63 @@
+@import "../utils/_variables.scss";
+
+.filter-select {
+  width: 100%;
+  span {
+    font-size: 16px;
+    font-family: $font-bold;
+  }
+  .select {
+    position: relative;
+    margin: 10px 0 0;
+    &__option {
+      font-family: $font-regular;
+      padding: 10px;
+      width: 100%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    & > .select__option:first-child {
+      border: 1px solid #cccccc;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 38px;
+      svg {
+        transition: 0.3s ease all;
+        color: #838383;
+      }
+    }
+    &__options-container {
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 38px;
+      background: #ffffff;
+      z-index: 50;
+      max-height: 0;
+      overflow: hidden auto;
+      opacity: 0;
+      border: transparent;
+      transition: 0.4s ease all;
+      .select__option {
+        transition: background 0.2s ease;
+        &:hover {
+          background: rgba(0, 0, 0, 0.25);
+        }
+      }
+    }
+    &.isActive {
+      .select__options-container {
+        opacity: 1;
+        border: 1px solid #cccccc;
+        border-top: transparent;
+        max-height: 110px;
+      }
+      & > .select__option:first-child {
+        svg {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}

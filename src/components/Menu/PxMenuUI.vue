@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 import XLSX from "xlsx";
 //UI
 import PxButton from "@/components/PxButton";
@@ -54,18 +55,20 @@ library.add(faFileExcel, faSync, faBars, faFilter);
 
 export default {
   name: "PxMenuUI",
-  props: {
-    issuesToPrint: Array,
-  },
+
   components: {
     PxButton,
     FontAwesomeIcon,
   },
-  setup(props) {
+  setup() {
+    const store = useStore();
+
+    const arrayIssuesXlxs = computed(() => store.getters["getArrayXlxs"]);
+
     const menuIsOpen = ref(false);
 
     const handleExportXLSX = () => {
-      let data = XLSX.utils.json_to_sheet(props.issuesToPrint);
+      let data = XLSX.utils.json_to_sheet(arrayIssuesXlxs.value);
       const workbook = XLSX.utils.book_new();
       const filename = "crystal-issues";
       const date = new Date();
@@ -76,7 +79,7 @@ export default {
 
     const handleUpdateIssues = () => {
       console.log("Actualizar");
-      // store.value.load = true;
+      store.dispatch("setShowLoaderUIState");
 
       // const index = store.value.issuesArr.findIndex(
       //   (item) => item.id_issue == item.id_issue
@@ -87,8 +90,9 @@ export default {
       //   ...store.value.issuesArr.slice(index),
       // ];
 
-      // setTimeout(() => {
-      // }, 500);
+      setTimeout(() => {
+        store.dispatch("setHideLoaderUIState");
+      }, 1000);
     };
 
     const handleOpenMenu = () => {

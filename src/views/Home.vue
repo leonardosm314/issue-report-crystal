@@ -37,7 +37,9 @@
     </slot>
 
     <!-- Menu UI -->
-    <PxMenuUI :issuesToPrint="arrIssues" />
+    <PxMenuUI />
+
+    <!-- <PxFilterUI /> -->
   </div>
 </template>
 
@@ -51,6 +53,7 @@ import PxBodyTable from "@/components/Table/PxBodyTable";
 import PxActionsTable from "@/components/Table/PxActionsTable";
 import PxFilter from "@/components/Filter/PxFilterUI";
 import PxMenuUI from "@/components/Menu/PxMenuUI";
+import PxFilterUI from "@/components/Filter/PxFilterUI";
 import PxLoader from "@/components/Loader/PxLoader";
 //Utils
 //Get variables for get info
@@ -83,6 +86,7 @@ export default {
     PxFilter,
     PxLoader,
     PxMenuUI,
+    PxFilterUI,
   },
   setup() {
     const store = useStore();
@@ -99,13 +103,23 @@ export default {
       "Update",
     ]);
 
-    const arrIssues = ref([]);
+    const arrIssues = computed(() => store.state.arrayIssuesUI);
+    const arrIssuesXlxs = computed(() => store.state.arrayIssuesXlxs);
 
     const objInformationIssues = ref({
       idIssue: 0,
       numIssue: "",
       titleIssue: "",
       labels: [],
+      asigned: "",
+      stateIssue: "",
+      updated: "",
+    });
+
+    const objInformationIssuesXlxs = ref({
+      idIssue: 0,
+      numIssue: "",
+      titleIssue: "",
       asigned: "",
       stateIssue: "",
       updated: "",
@@ -177,6 +191,34 @@ export default {
                 column_name: infoIssues[0].col_name,
               };
 
+              //For Xlxs
+              objInformationIssuesXlxs.value = {
+                id_issue: infoIssues[0].id,
+                num_issue: infoIssues[0].number,
+                title_issue: infoIssues[0].title,
+                asignedUserName:
+                  infoIssues[0].assignee !== null
+                    ? infoIssues[0].assignee.login
+                    : "",
+                state_issue: infoIssues[0].state,
+                closed_at: `${
+                  infoIssues[0].closed_at !== null
+                    ? infoIssues[0].closed_at.split("T")[0]
+                    : ""
+                }`,
+                created_at: `${
+                  infoIssues[0].created_at !== null
+                    ? infoIssues[0].created_at.split("T")[0]
+                    : ""
+                }`,
+                updated_at: `${
+                  infoIssues[0].updated_at !== null
+                    ? infoIssues[0].updated_at.split("T")[0]
+                    : ""
+                }`,
+                url_issue: infoIssues[0].html_url,
+                column_name: infoIssues[0].col_name,
+              };
               //set labels
               infoIssues[0].labels.forEach((label) => {
                 labelsIssue.value = {
@@ -201,28 +243,24 @@ export default {
               });
 
               for (const key in objLabelsKeys) {
+                //For UI
                 objInformationIssues.value = {
                   ...objInformationIssues.value,
                   ...objLabelsKeys[key],
                 };
+                //For Xlxs
+                objInformationIssuesXlxs.value = {
+                  ...objInformationIssuesXlxs.value,
+                  ...objLabelsKeys[key],
+                };
               }
 
-              //Concat information
-              arrIssues.value = [
-                ...arrIssues.value,
-                objInformationIssues.value,
-              ];
+              store.commit("setArrayIssuesUI", objInformationIssues.value);
 
-              //Order array objects issues
-              arrIssues.value.sort((a, b) => {
-                if (a.num_issue < b.num_issue) {
-                  return -1;
-                }
-                if (a.num_issue > b.num_issue) {
-                  return 1;
-                }
-                return 0;
-              });
+              store.commit(
+                "setArrayIssuesXlxs",
+                objInformationIssuesXlxs.value
+              );
             });
           }
         });
