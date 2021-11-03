@@ -1,8 +1,6 @@
 <template>
   <div class="home wrapper">
-    <h1>
-      Crystal Report
-    </h1>
+    <h1>Crystal Report</h1>
 
     <slot v-if="stateLoaderUI">
       <PxLoader />
@@ -23,7 +21,7 @@
           :titleColumn="issue.column_name"
           v-show="
             (pageNumber - 1) * pageSize <= index &&
-              pageNumber * pageSize > index
+            pageNumber * pageSize > index
           "
         />
       </PxTableUI>
@@ -149,6 +147,7 @@ export default {
             HOST,
             OPTIONS
           );
+          console.log(projec);
           for (const project_column of projectsColumn) {
             let projectColumnId = project_column.id;
             const columnCardData = await getColumnCardsData(
@@ -156,10 +155,12 @@ export default {
               HOST,
               OPTIONS
             );
+
             const dataCardsAndColumn = getProjectCardsData(
               project_column,
               columnCardData
             );
+
             dataCardsAndColumn.forEach(async (data_card) => {
               const infoIssues = await getIssuesData(
                 HOST,
@@ -218,6 +219,7 @@ export default {
                 }`,
                 url_issue: infoIssues[0].html_url,
                 column_name: infoIssues[0].col_name,
+                project_name: projec.name,
               };
               //set labels
               infoIssues[0].labels.forEach((label) => {
